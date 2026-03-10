@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Special Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-pink: #ffb7b2;
+            --soft-pink: #ffdac1;
+            --dark-pink: #ff85a1;
+            --bg-color: #fff5f5;
+        }
+
+        body {
+            font-family: 'Itim', cursive;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: #4a4a4a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            border-radius: 30px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 35px rgba(255, 183, 178, 0.3);
+            text-align: center;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .active { display: block; animation: fadeIn 0.8s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- หน้า 1: Landing --- */
+        .heart { font-size: 80px; animation: pulse 1.5s infinite; cursor: pointer; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- หน้า 2: Passcode --- */
+        .pass-dot { font-size: 30px; color: var(--main-pink); margin-bottom: 20px; }
+        .grid-keys {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+        }
+        .key {
+            background: #fdf2f2; padding: 15px; border-radius: 50%;
+            cursor: pointer; transition: 0.2s; font-weight: bold;
+        }
+        .key:active { background: var(--main-pink); color: white; }
+
+        /* --- หน้า 3: Menu --- */
+        .menu-btn {
+            background: var(--main-pink); color: white; border: none;
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 15px;
+            font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+        }
+        .menu-btn:hover { background: var(--dark-pink); }
+
+        /* --- หน้า 4: Love Journey --- */
+        .time-box {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
+        }
+        .time-unit { background: var(--soft-pink); padding: 10px; border-radius: 10px; }
+        .time-unit span { display: block; font-size: 1.5rem; font-weight: bold; }
+
+        /* --- หน้า 5: Gallery (IG Style) --- */
+        .gallery-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            gap: 0; /* ชิดกันเหมือน IG */
+            border-radius: 15px;
+            scrollbar-width: none; /* ซ่อน scrollbar Firefox */
+        }
+        .gallery-wrapper::-webkit-scrollbar { display: none; } /* ซ่อน scrollbar Chrome/Safari */
+
+        .photo-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-frame-full {
+            width: 100%;
+            height: 350px; /* กำหนดความสูงที่เหมาะสม */
+            object-fit: contain; /* โชว์ขนาดรูปจริง ไม่ให้โดนตัด */
+            background: #fafafa;
+        }
+
+        .photo-counter {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        /* --- Common Elements --- */
+        .back-btn { margin-top: 20px; color: #aaa; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
+        button { font-family: 'Itim', cursive; }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="container active">
+        <h1>Hello My Love</h1>
+        <div class="heart" onclick="goToPage(2)">❤️</div>
+        <p>คลิกที่หัวใจเพื่อไปต่อ...</p>
+    </div>
+
+    <div id="page2" class="container">
+        <h2>Enter Our Secret Code</h2>
+        <div id="pass-display" class="pass-dot">______</div>
+        <div class="grid-keys">
+            <script>
+                for(let i=1; i<=9; i++) {
+                    document.write(`<div class="key" onclick="pressKey('${i}')">${i}</div>`);
+                }
+            </script>
+            <div></div>
+            <div class="key" onclick="pressKey('0')">0</div>
+            <div class="key" onclick="resetPass()">C</div>
+        </div>
+    </div>
+
+    <div id="page3" class="container">
+        <h2 style="color: var(--dark-pink);">Our Memories</h2>
+        <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947221565538404/IMG_20221022_023055_264.jpg?ex=69b18714&is=69b03594&hm=48f483c36e244f84cc4dbb2453b116493ca9d90547f519f9b28cfdc796aa5f2f&=&format=webp&width=355&height=544" style="width:150px; height:150px; border-radius:50%; margin-bottom:15px; object-fit: cover;" alt="Couple">
+        
+        <button class="menu-btn" onclick="goToPage(4)">🗓️ Our Journey</button>
+        <button class="menu-btn" onclick="goToPage(5)">📸 Photo Gallery</button>
+        <button class="menu-btn" onclick="goToPage(6)">💌 Love Letter</button>
+    </div>
+
+    <div id="page4" class="container">
+        <h2>เราคบกันมาแล้ว...</h2>
+        <div class="time-box">
+            <div class="time-unit"><span id="days">0</span> วัน</div>
+            <div class="time-unit"><span id="hours">0</span> ชั่วโมง</div>
+            <div class="time-unit"><span id="mins">0</span> นาที</div>
+            <div class="time-unit"><span id="secs">0</span> วินาที</div>
+        </div>
+        <p style="margin-top:20px;">ขอบคุณที่อยู่ข้างกันนะ ❤️</p>
+        <div class="back-btn" onclick="goToPage(3)">ย้อนกลับ</div>
+    </div>
+
+    <div id="page5" class="container">
+        <h2>Our Photos</h2>
+        
+        <div class="gallery-wrapper">
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947040161894551/46de1fbb1d1c0dfea2f81ab3c2f5125e_0.jpeg?ex=69b186e9&is=69b03569&hm=5803d49d4b2614525cf910c2917770c7c41069b2c06a802940cc97cf151a59a0&=&format=webp&width=725&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947041814319226/20240419_010538.jpg?ex=69b186e9&is=69b03569&hm=52f47037c253c871e2358ea5cdfc4b88145c6380ce72042be8413e8ee7b21b12&=&format=webp&width=306&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://cdn.discordapp.com/attachments/1480946243843788830/1480947040832979004/20231028_123629.jpg?ex=69b186e9&is=69b03569&hm=749bcd1e94bfc8467d1945e761181c76b3259740e5fc85b0178c83afca0aed78&" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947043194372216/20240622_092856.jpg?ex=69b186e9&is=69b03569&hm=52e521489cb99b5f64078014599d44507473204141c814283cd4328769b05989&=&format=webp&width=306&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947044054077561/20250802_152234.jpg?ex=69b186e9&is=69b03569&hm=2b0cd923798dba9005bcfb73c8354ab38103242ac90f1cef1bbebb1406efc412&=&format=webp&width=408&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947045820006592/20250802_202127.jpg?ex=69b186ea&is=69b0356a&hm=46ed4794262f96a1a4bdd828ad2e933d5dd7ec12f91d28bb1a05e523be48dc00&=&format=webp&width=408&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947046662934579/DSC_7950.JPG?ex=69b186ea&is=69b0356a&hm=e3443d170f9caf6f2a7fbc925d7e49b3c37d38099b02fbe57f7fbd2ca608d161&=&format=webp&width=816&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947220172898377/DSC_7956.JPG?ex=69b18713&is=69b03593&hm=28a55bd30e3f615cbde0f64d42fde2f30d7433ad263fe8b366d7da79c6192ab0&=&format=webp&width=816&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947220504379532/DSC_7962.JPG?ex=69b18714&is=69b03594&hm=795b1727e158dacf2bc63b1294662f479b4553161d5bfc5bca2ab1be3bfe3966&=&format=webp&width=816&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947221565538404/IMG_20221022_023055_264.jpg?ex=69b18714&is=69b03594&hm=48f483c36e244f84cc4dbb2453b116493ca9d90547f519f9b28cfdc796aa5f2f&=&format=webp&width=355&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947367485374464/IMG_20221106_213731_520.jpg?ex=69b18737&is=69b035b7&hm=8777296e25338e0659df06103b1289f417e0204a45589e63417a4c7469e05d17&=&format=webp&width=968&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947368802255040/IMG_20230311_112913_764.jpg?ex=69b18737&is=69b035b7&hm=0405d38ab7f61f252224176061633086c0f164e72a1d7d4806fa561ebc79a7a2&=&format=webp&width=544&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947369330606120/IMG_20230325_132602_077.jpg?ex=69b18737&is=69b035b7&hm=01da50c3956599b777837cb082668fb74961aaa3a88d7eca8ec4b5abdb9c60c7&=&format=webp&width=544&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947369867739258/IMG_20230728_215618_005.jpg?ex=69b18737&is=69b035b7&hm=3d3dee3f9faa5209dbedbe60f303056fdb0ccf95d6f991204200c34ab2c267ae&=&format=webp&width=544&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947370395959356/IMG_20230805_135117_796.jpg?ex=69b18737&is=69b035b7&hm=50b8b18f26b42b60d42c6c450059d96a80664422f2212c913291e69774ebea52&=&format=webp&width=544&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947444769624176/VideoCapture_20240409-151244.jpg?ex=69b18749&is=69b035c9&hm=cd0279f1f1d1dce3096c95e7d416f72674bcac03d60776f36ae4492e8354272e&=&format=webp&width=306&height=544" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://media.discordapp.net/attachments/1480946243843788830/1480947445386055883/VideoCapture_20241001-232304.jpg?ex=69b18749&is=69b035c9&hm=9933b8ca0bbad244c2332ed816bd06a0340ebe9a7bec89e3e6273a011a0ba851&=&format=webp&width=313&height=544" class="photo-frame-full">
+            </div>
+        </div>
+
+        <p style="font-size: 0.8rem; color: #bbb; margin-top: 10px;">← เลื่อนซ้ายขวาเพื่อดูรูป →</p>
+        <div class="back-btn" onclick="goToPage(3)">ย้อนกลับ</div>
+    </div>
+
+    <div id="page6" class="container">
+        <h2>To My Special One</h2>
+        <div style="text-align: left; background: #fffdf0; padding: 20px; border-radius: 10px; line-height: 1.6;">
+            ถึง [น้องเกม],<br><br>
+            ขอบคุณสำหรับทุกอย่างที่ผ่านมานะ เว็บนี้เค้าตั้งใจทำมาให้ที่รักโดยเฉพาะ... ถึงมันอาจจะไม่สวยแต่ก็ตั้งใจทำนะ ช่วยอยู่ด้วยกันต่อจากนี้และตลอดไป 
+            <br><br>
+            รักที่สุดเลย,<br>
+            [พี่มาร์ค]
+        </div>
+        <div class="back-btn" onclick="goToPage(3)">ย้อนกลับ</div>
+    </div>
+
+    <script>
+        const CORRECT_PASS = "110822"; 
+        const START_DATE = "2022-08-11"; 
+
+        let inputPass = "";
+
+        function goToPage(pageNum) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.getElementById('page' + pageNum).classList.add('active');
+            
+            if(pageNum === 4) startCounter();
+        }
+
+        function pressKey(num) {
+            if (inputPass.length < 6) {
+                inputPass += num;
+                updatePassDisplay();
+            }
+            if (inputPass === CORRECT_PASS) {
+                setTimeout(() => goToPage(3), 300);
+            } else if (inputPass.length === 6) {
+                alert("รหัสผ่านไม่ถูกต้องนะเตง...");
+                resetPass();
+            }
+        }
+
+        function updatePassDisplay() {
+            let display = "";
+            for(let i=0; i<6; i++) {
+                display += (inputPass[i] ? "❤️" : "_");
+            }
+            document.getElementById('pass-display').innerText = display;
+        }
+
+        function resetPass() {
+            inputPass = "";
+            updatePassDisplay();
+        }
+
+        function startCounter() {
+            // เคลียร์ interval เดิมถ้ามี
+            if(window.timer) clearInterval(window.timer);
+            
+            window.timer = setInterval(() => {
+                const start = new Date(START_DATE).getTime();
+                const now = new Date().getTime();
+                const diff = now - start;
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = d;
+                document.getElementById('hours').innerText = h;
+                document.getElementById('mins').innerText = m;
+                document.getElementById('secs').innerText = s;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
