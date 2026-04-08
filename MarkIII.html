@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Anniversary</title>
+    <style>
+        :root {
+            --pink-primary: #ffafcc;
+            --pink-soft: #ffc2d1;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
+            background-color: var(--pink-soft);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            display: none; /* ซ่อนไว้ก่อนเพื่อสลับหน้า */
+        }
+
+        .active { display: block; }
+
+        /* หน้าแรก */
+        .heart-img { width: 150px; animation: heartbeat 1.2s infinite; }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* ปุ่ม */
+        button {
+            background: var(--pink-primary);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* หน้าใส่รหัส */
+        .passcode-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .num-btn {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* หน้าเมนู */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .menu-item {
+            background: var(--pink-soft);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="container active">
+        <h1 style="color: #ff5c8a;">Happy Anniversary</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" class="heart-img" alt="Heart">
+        <p>Special gift for you</p>
+        <button onclick="goToPage(2)">Start!</button>
+    </div>
+
+    <div id="page2" class="container">
+        <h2>My Lock</h2>
+        <p>ใส่วันครบรอบของเรา</p>
+        <div id="pass-display" style="font-size: 2rem; letter-spacing: 10px;">______</div>
+        <div class="passcode-grid">
+            <div class="num-btn" onclick="pressKey('1')">1</div>
+            <div class="num-btn" onclick="pressKey('2')">2</div>
+            <div class="num-btn" onclick="pressKey('3')">3</div>
+            <div class="num-btn" onclick="pressKey('4')">4</div>
+            <div class="num-btn" onclick="pressKey('5')">5</div>
+            <div class="num-btn" onclick="pressKey('6')">6</div>
+            <div class="num-btn" onclick="pressKey('7')">7</div>
+            <div class="num-btn" onclick="pressKey('8')">8</div>
+            <div class="num-btn" onclick="pressKey('9')">9</div>
+            <div></div>
+            <div class="num-btn" onclick="pressKey('0')">0</div>
+            <div class="num-btn" onclick="resetPass()">C</div>
+        </div>
+    </div>
+
+    <div id="page3" class="container">
+        <h2 style="color: #ff5c8a;">Menu of Our Love</h2>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="alert('แสดงรูปภาพของคุณที่นี่')">Our Memories</div>
+            <div class="menu-item" onclick="alert('แสดงปฏิทินที่นี่')">Love Calendar</div>
+            <!-- <div class="menu-item" onclick="alert('เล่นเกมจับคู่')">Love Puzzle</div>
+            <div class="menu-item" onclick="alert('อ่านจดหมาย')">Love Notes</div> -->
+        </div>
+    </div>
+
+    <script>
+        let currentPass = "";
+        const correctPass = "110865"; // เปลี่ยนรหัสผ่านตรงนี้ (เช่น วันที่คบกัน)
+
+        function goToPage(pageNum) {
+            document.querySelectorAll('.container').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + pageNum).classList.add('active');
+        }
+
+        function pressKey(num) {
+            if (currentPass.length < 6) {
+                currentPass += num;
+                document.getElementById('pass-display').innerText = currentPass.padEnd(6, '_');
+            }
+            
+            if (currentPass === correctPass) {
+                setTimeout(() => {
+                    goToPage(3);
+                }, 500);
+            } else if (currentPass.length === 6) {
+                alert("รหัสไม่ถูกต้อง ลองใหม่อีกครั้งนะ");
+                resetPass();
+            }
+        }
+
+        function resetPass() {
+            currentPass = "";
+            document.getElementById('pass-display').innerText = "______";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Special Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-pink: #ffb7b2;
+            --soft-pink: #ffdac1;
+            --dark-pink: #ff85a1;
+            --bg-color: #fff5f5;
+        }
+
+        body {
+            font-family: 'Itim', cursive;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: #4a4a4a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            border-radius: 30px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 35px rgba(255, 183, 178, 0.3);
+            text-align: center;
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .active { display: block; animation: fadeIn 0.8s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- หน้า 1: Landing --- */
+        .heart { font-size: 80px; animation: pulse 1.5s infinite; cursor: pointer; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- หน้า 2: Passcode --- */
+        .pass-dot { font-size: 30px; color: var(--main-pink); margin-bottom: 20px; }
+        .grid-keys {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+        }
+        .key {
+            background: #fdf2f2; padding: 15px; border-radius: 50%;
+            cursor: pointer; transition: 0.2s; font-weight: bold;
+        }
+        .key:active { background: var(--main-pink); color: white; }
+
+        /* --- หน้า 3: Menu --- */
+        .menu-btn {
+            background: var(--main-pink); color: white; border: none;
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 15px;
+            font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+        }
+        .menu-btn:hover { background: var(--dark-pink); }
+
+        /* --- หน้า 4: Love Journey --- */
+        .time-box {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
+        }
+        .time-unit { background: var(--soft-pink); padding: 10px; border-radius: 10px; }
+        .time-unit span { display: block; font-size: 1.5rem; font-weight: bold; }
+
+        /* --- หน้า 5: Gallery (IG Style) --- */
+        .gallery-wrapper {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            gap: 0; /* ชิดกันเหมือน IG */
+            border-radius: 15px;
+            scrollbar-width: none; /* ซ่อน scrollbar Firefox */
+        }
+        .gallery-wrapper::-webkit-scrollbar { display: none; } /* ซ่อน scrollbar Chrome/Safari */
+
+        .photo-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-frame-full {
+            width: 100%;
+            height: 350px; /* กำหนดความสูงที่เหมาะสม */
+            object-fit: contain; /* โชว์ขนาดรูปจริง ไม่ให้โดนตัด */
+            background: #fafafa;
+        }
+
+        .photo-counter {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        /* --- Common Elements --- */
+        .back-btn { margin-top: 20px; color: #aaa; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
+        button { font-family: 'Itim', cursive; }
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="container active">
+        <h1>Hello My Love</h1>
+        <div class="heart" onclick="goToPage(2)">❤️</div>
+        <p>คลิกที่หัวใจเพื่อไปต่อ...</p>
+    </div>
+
+    <div id="page2" class="container">
+        <h2>Enter Our Secret Code</h2>
+        <div id="pass-display" class="pass-dot">______</div>
+        <div class="grid-keys">
+            <script>
+                for(let i=1; i<=9; i++) {
+                    document.write(`<div class="key" onclick="pressKey('${i}')">${i}</div>`);
+                }
+            </script>
+            <div></div>
+            <div class="key" onclick="pressKey('0')">0</div>
+            <div class="key" onclick="resetPass()">C</div>
+        </div>
+    </div>
+
+    <div id="page3" class="container">
+        <h2 style="color: var(--dark-pink);">Our Memories</h2>
+        <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20221022_023055_264.jpg?raw=true" style="width:150px; height:150px; border-radius:50%; margin-bottom:15px; object-fit: cover;" alt="Couple">
+        
+        <button class="menu-btn" onclick="goToPage(4)">🗓️ Our Journey</button>
+        <button class="menu-btn" onclick="goToPage(5)">📸 Photo Gallery</button>
+        <button class="menu-btn" onclick="goToPage(6)">💌 Love Letter</button>
+    </div>
+
+    <div id="page4" class="container">
+        <h2>เราคบกันมาแล้ว...</h2>
+        <div class="time-box">
+            <div class="time-unit"><span id="year">0</span></div>
+            <div class="time-unit"><span id="days">0</span> วัน</div>
+            <div class="time-unit"><span id="hours">0</span> ชั่วโมง</div>
+            <div class="time-unit"><span id="mins">0</span> นาที</div>
+            <div class="time-unit"><span id="secs">0</span> วินาที</div>
+        </div>
+        <p style="margin-top:20px;">ขอบคุณที่อยู่ข้างกันนะ ❤️</p>
+        <div class="back-btn" onclick="goToPage(3)">ย้อนกลับ</div>
+    </div>
+
+    <div id="page5" class="container">
+        <h2>Our Photos</h2>
+        
+        <div class="gallery-wrapper">
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/95bf3e86420bd69a8ba90fc823cee17e_1707387891617_0.webp.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/20240419_010538.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/20231028_123629.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/20240622_092856.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/20250802_152234.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/20250802_202127.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/DSC_7950.JPG?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/DSC_7956.JPG?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/DSC_7962.JPG?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20221022_023055_264.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20221106_213731_520.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20230311_112913_764.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20230325_132602_077.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20230728_215618_005.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/IMG_20230805_135117_796.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/VideoCapture_20240409-151244.jpg?raw=true" class="photo-frame-full">
+            </div>
+            <div class="photo-item">
+                <img src="https://github.com/rinkashieme0/our-special-day/blob/main/images/VideoCapture_20241001-232304.jpg?raw=true" class="photo-frame-full">
+            </div>
+        </div>
+
+        <p style="font-size: 0.8rem; color: #bbb; margin-top: 10px;">← เลื่อนซ้ายขวาเพื่อดูรูป →</p>
+        <div class="back-btn" onclick="goToPage(3)">ย้อนกลับ</div>
+    </div>
+
+    <div id="page6" class="container">
+        <h2>To My Special One</h2>
+        <div style="text-align: left; background: #fffdf0; padding: 20px; border-radius: 10px; line-height: 1.6;">
+            ถึง [น้องเกม],<br><br>
+            ขอบคุณสำหรับทุกอย่างที่ผ่านมานะ เว็บนี้เค้าตั้งใจทำมาให้ที่รักโดยเฉพาะ... ถึงมันอาจจะไม่สวยแต่ก็ตั้งใจทำนะ ช่วยอยู่ด้วยกันต่อจากนี้และตลอดไป 
+            <br><br>
+            รักที่สุดเลย,<br>
+            [พี่มาร์ค]
+        </div>
+        <div class="back-btn" onclick="goToPage(3)">ย้อนกลับ</div>
+    </div>
+
+    <script>
+        const CORRECT_PASS = "110822"; 
+        const START_DATE = "2022-08-11"; 
+
+        let inputPass = "";
+        let wrongCount = 0;
+
+        function goToPage(pageNum) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
+            document.getElementById('page' + pageNum).classList.add('active');
+            
+            if(pageNum === 4) startCounter();
+        }
+
+        // function pressKey(num) {
+        //     if (inputPass.length < 6) {
+        //         inputPass += num;
+        //         updatePassDisplay();
+        //     }
+        //     if (inputPass === CORRECT_PASS) {
+        //         setTimeout(() => goToPage(3), 300);
+        //     } else if (inputPass.length === 6) {
+        //         alert("รหัสผ่านไม่ถูกต้องนะเตง...");
+        //         resetPass();
+        //     }
+        // }
+
+        function pressKey(num) {
+            if (inputPass.length < 6) {
+                inputPass += num;
+                updatePassDisplay();
+            }
+            
+            if (inputPass === CORRECT_PASS) {
+                wrongCount = 0; // ถ้ารหัสถูก ให้รีเซ็ตตัวนับ
+                setTimeout(() => goToPage(3), 300);
+            } else if (inputPass.length === 6) {
+                wrongCount++; // เพิ่มจำนวนครั้งที่ผิด
+                
+                if (wrongCount >= 3) {
+                    alert("⚠️ ผิด 3 ครั้งแล้วนะ! แอบดูโพยหรือเปล่าเนี่ยยย? 😜");
+                    // หรือจะเปลี่ยนข้อความเป็น "ลืมวันครบรอบเหรอ เดี๋ยวโดนหยิกนะ!" ก็ได้ครับ
+                } else {
+                    alert("รหัสผ่านไม่ถูกต้องนะเตง... (ผิดครั้งที่ " + wrongCount + ")");
+                }
+                
+                resetPass();
+            } 
+        }
+
+        function updatePassDisplay() {
+            let display = "";
+            for(let i=0; i<6; i++) {
+                display += (inputPass[i] ? "❤️" : "_");
+            }
+            document.getElementById('pass-display').innerText = display;
+        }
+
+        function resetPass() {
+            inputPass = "";
+            updatePassDisplay();
+        }
+
+        function startCounter() {
+            // เคลียร์ interval เดิมถ้ามี
+            if(window.timer) clearInterval(window.timer);
+            
+            window.timer = setInterval(() => {
+                const start = new Date(START_DATE).getTime();
+                const now = new Date().getTime();
+                const diff = now - start;
+
+                const y = Math.floor(diff / (1000 * 60 *60* 24 *365))
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('year').innerText = y;
+                document.getElementById('days').innerText = d;
+                document.getElementById('hours').innerText = h;
+                document.getElementById('mins').innerText = m;
+                document.getElementById('secs').innerText = s;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
