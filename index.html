@@ -151,7 +151,8 @@
     <div id="page4" class="container">
         <h2>เราคบกันมาแล้ว...</h2>
         <div class="time-box">
-            <div class="time-unit"><span id="year">0</span></div>
+            <div class="time-unit"><span id="year">0</span>ปี</div>
+            <div class="time-unit"><span id="month">0</span>เดือน</div>
             <div class="time-unit"><span id="days">0</span> วัน</div>
             <div class="time-unit"><span id="hours">0</span> ชั่วโมง</div>
             <div class="time-unit"><span id="mins">0</span> นาที</div>
@@ -236,7 +237,7 @@
 
     <script>
         const CORRECT_PASS = "110822"; 
-        const START_DATE = "2022-08-11"; 
+        const START_DATE = "2022-08-11T00:00:00+07:00"; 
 
         let inputPass = "";
         let wrongCount = 0;
@@ -306,13 +307,15 @@
                 const now = new Date().getTime();
                 const diff = now - start;
 
-                const y = Math.floor(diff / (1000 * 60 *60* 24 *365))
+                const y = Math.floor(diff / (1000 * 60 *60* 24 * 365.25))
+                const M = Math.floor(diff / (1000 * 60 *60* 24 * 30.44))
                 const d = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((diff % (1000 * 60)) / 1000);
 
                 document.getElementById('year').innerText = y;
+                document.getElementById('month').innerText = M;
                 document.getElementById('days').innerText = d;
                 document.getElementById('hours').innerText = h;
                 document.getElementById('mins').innerText = m;
